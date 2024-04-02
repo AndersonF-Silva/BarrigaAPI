@@ -22,6 +22,6 @@ public class BaseTest implements Constantes {
         RestAssured.responseSpecification = resBuilder.build();
 
         RestAssured.enableLoggingOfRequestAndResponseIfValidationFails();
-        System.out.println("O(s) Teste(s) foi(ram) Configurado(s) com sucesso!");
+        System.out.println("O(s) Teste(s) foi(foram) Configurado(s) com sucesso!");
     }
 }
