@@ -1,18 +1,16 @@
 package br.com.chronosacademy.TestsRefact;
 
 import br.com.chronosacademy.Core.BaseTest;
-import io.restassured.RestAssured;
+import br.com.chronosacademy.Utils.GetsUtils;
 import org.junit.Test;
 import static io.restassured.RestAssured.given;
 import static org.hamcrest.Matchers.*;
 
 public class SaldoTeste extends BaseTest {
-    public Integer getIdContaPeloNome(String nome) {
-        return RestAssured.get(" /contas?nome="+nome).then().extract().path("id[0]");
-    }
+
     @Test
     public void deveCalcularSaldoContas() {
-        Integer CONTA_ID = getIdContaPeloNome("Conta para saldo");
+        Integer CONTA_ID = GetsUtils.getIdContaPeloNome("Conta para saldo");
         given()
                 .when()
                 .get("saldo")

@@ -3,21 +3,15 @@ package br.com.chronosacademy.TestsRefact;
 import br.com.chronosacademy.Core.BaseTest;
 import br.com.chronosacademy.POJO.Movimentacao;
 import br.com.chronosacademy.Utils.DataUtils;
-import io.restassured.RestAssured;
+import br.com.chronosacademy.Utils.GetsUtils;
 import org.junit.Test;
 import static io.restassured.RestAssured.given;
 import static org.hamcrest.Matchers.*;
 
 public class MovimentacaoTeste extends BaseTest {
-    public Integer getIdContaPeloNome(String nome) {
-        return RestAssured.get(" /contas?nome="+nome).then().extract().path("id[0]");
-    }
-    public Integer getIdMovimentacaoPelaDescricao(String desc) {
-        return RestAssured.get(" /transacoes?descricao="+desc).then().extract().path("id[0]");
-    }
     private Movimentacao getMovimentacaoValida(){
         Movimentacao mov = new Movimentacao();
-        mov.setConta_id(getIdContaPeloNome("Conta para movimentacoes"));
+        mov.setConta_id(GetsUtils.getIdContaPeloNome("Conta para movimentacoes"));
         mov.setDescricao("Descricao da Movimentacao");
         mov.setEnvolvido("Envolvido da Movimentacao");
         mov.setTipo("REC");
@@ -30,7 +24,6 @@ public class MovimentacaoTeste extends BaseTest {
     //Testes referentes a Movimentacao
     @Test
     public void deveIncluirMovimentacaoComSucesso() {
-        //2ndo - Incluo a Conta com Sucesso
         Movimentacao mov = getMovimentacaoValida();
         given()
                 .body(mov)
@@ -43,7 +36,6 @@ public class MovimentacaoTeste extends BaseTest {
     }
     @Test
     public void deveValidarCamposObrigatoriosMovimentacao() {
-        //2ndo - Incluo a Conta com Sucesso
         given()
                 .body("{}")
                 .when()
@@ -66,7 +58,6 @@ public class MovimentacaoTeste extends BaseTest {
     }
     @Test
     public void naoDeveIncluirMovimentacaoComDataFutura() {
-        //2ndo - Incluo a Conta com Sucesso
         Movimentacao mov = getMovimentacaoValida();
         mov.setData_transacao(DataUtils.getDataDiferencaDias(1));
         given()
@@ -82,7 +73,7 @@ public class MovimentacaoTeste extends BaseTest {
     }
     @Test
     public void naoDeveRemoverContaComMovimentacao() {
-        Integer CONTA_ID = getIdContaPeloNome("Conta com movimentacao");
+        Integer CONTA_ID = GetsUtils.getIdContaPeloNome("Conta com movimentacao");
         given()
                 .pathParam("id", CONTA_ID)
                 .when()
@@ -95,7 +86,7 @@ public class MovimentacaoTeste extends BaseTest {
     }
     @Test
     public void deveRemoverMovimentacaoContas() {
-        Integer MOV_ID = getIdMovimentacaoPelaDescricao("Movimentacao para exclusao");
+        Integer MOV_ID = GetsUtils.getIdMovimentacaoPelaDescricao("Movimentacao para exclusao");
         given()
                 .pathParam("id", MOV_ID)
                 .when()
